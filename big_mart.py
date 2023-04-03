@@ -48,16 +48,46 @@ if (selected == 'Big Mart Sales Prediction'):
 
     with col2:
         Outlet_Location_Type = st.selectbox('Outlet Location Type', ['Tier 1', 'Tier 2', 'Tier 3'])
-
+    
+    #Data Preprocessing
+        
     data = {
             'Item_Visibility': Item_Visibility,
             'Item_MRP' : Item_MRP,
             'Outlet_Size' : Outlet_Size,
-            'Item_Fat_Content': Item_Fat_Content,
+            'Item_Fat_Content_Regular': Item_Fat_Content,
             'Outlet_Location_Type' : Outlet_Location_Type
              }
+    
+    oe = OrdinalEncoder(categories = [['Small','Medium','High']])
+    scaler = StandardScaler()
+    
+    def make_prediction(data):
+        df = pd.DataFrame(data, index=[0])
+        
+        if df['Item_Fat_Content_Regular'].values == 'Low Fat':
+            df['Item_Fat_Content_Regular'] = 0.0
+  
+        if df['Item_Fat_Content_Regular'].values == 'Regular':
+          df['Item_Fat_Content_Regular'] = 1.0
 
-    df = pd.DataFrame(data, index=[0])
+        if df['Outlet_Location_Type'].values == 'Tier 1':
+          df[['Outlet_Location_Type_Tier 1','Outlet_Location_Type_Tier 2', 'Outlet_Location_Type_Tier 3']] = [1.0, 0.0, 0.0]
+
+        if df['Outlet_Location_Type'].values == 'Tier 2':
+          df[['Outlet_Location_Type_Tier 1','Outlet_Location_Type_Tier 2', 'Outlet_Location_Type_Tier 3']] = [0.0, 1.0, 0.0]
+
+        if df['Outlet_Location_Type'].values == 'Tier 3':
+          df[['Outlet_Location_Type_Tier 1','Outlet_Location_Type_Tier 2', 'Outlet_Location_Type_Tier 3']] = [0.0, 0.0, 1.0]
+        
+        df['Outlet_Size'] = oe.fit_transform(df[['Outlet_Size']])
+        df = df.drop(columns = ['Outlet_Location_Type'], axis = 1 )
+        df[['Item_Visibility', 'Item_MRP']] = StandardScaler().fit_transform(df[['Item_Visibility', 'Item_MRP']])
+        
+        prediction = model.predict(df)
+        
+        return prediction
+        
 
     
     # code for Prediction
@@ -66,7 +96,7 @@ if (selected == 'Big Mart Sales Prediction'):
     # creating a button for Prediction
     
     if st.button('Predict Sales'):
-        sales_prediction = model.predict([[Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, Age]])
+        sales_prediction = make_prediction(data)
         sales_prediction_output = f"The sales is predicted to be {sales_prediction}"
 
         
