@@ -17,9 +17,9 @@ model = pickle.load(open('big_mart_model.pkl', 'rb'))
 # sidebar for navigation
 with st.sidebar:
     
-    selected = option_menu('Sales Prediction System', #Title of the Sidebar
+    selected = option_menu('Sales Prediction System', #Title of the OptionMenu
                           
-                          ['Big Mart Sales Prediction'], #You can add more options to the sidebar
+                          ['Big Mart Sales Prediction','Financial Inclusion'], #You can add more options to the sidebar
                           icons=['shop'], #BootStrap Icons - Add more depending on the number of sidebar options you have.
                           default_index=0) #Default side bar selection
     
