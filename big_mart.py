@@ -37,10 +37,10 @@ if (selected == 'Big Mart Sales Prediction'):
     col1, col2 = st.columns(2)
     
     with col1:
-        Item_Visibility = st.number_input('Item Visibility', min_value=0.00, max_value=0.50, step=0.01)
+        Item_Visibility = st.number_input('Item Visibility', min_value=0.00, max_value=0.40, step=0.01)
 
     with col1:
-        Item_MRP = st.number_input('Item MRP', min_value=30.00, max_value=300.00, step=1.00)
+        Item_MRP = st.number_input('Item MRP', min_value=30.00, max_value=270.00, step=1.00)
 
     with col1:
         Outlet_Size = st.selectbox('Outlet Size', ['Small', 'Medium', 'High'])
@@ -88,18 +88,18 @@ if (selected == 'Big Mart Sales Prediction'):
         
         prediction = model.predict(df)
         
-        return prediction
+        return round(float(prediction),2)
         
 
     
     # code for Prediction
-    sales_prediction_output = ""
+    # sales_prediction_output = ""
     
     # creating a button for Prediction
     
     if st.button('Predict Sales'):
         sales_prediction = make_prediction(data)
-        sales_prediction_output = f"The sales is predicted to be {round(float(sales_prediction),2)}"
+        sales_prediction_output = f"The sales is predicted to be {sales_prediction}"
 
         
     st.success(sales_prediction_output)
