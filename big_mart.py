@@ -30,6 +30,8 @@ if (selected == 'Big Mart Sales Prediction'):
     # page title
     st.title('Sales Prediction using ML')
     
+    #Image
+    st.image('hero.jpg')
     
     # getting the input data from the user
     col1, col2 = st.columns(2)
