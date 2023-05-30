@@ -96,7 +96,7 @@ if (selected == 'Big Mart Sales Prediction'):
     # sales_prediction_output = ""
     
     # creating a button for Prediction
-    
+    sales_prediction_output = ""
     if st.button('Predict Sales'):
         sales_prediction = make_prediction(data)
         sales_prediction_output = f"The sales is predicted to be {sales_prediction}"
